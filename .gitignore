@@ -1,0 +1,32 @@
+# Entornos virtuales
+venv/
+.env
+
+# Archivos de configuración con secretos
+config.py
+monitor_bot.py
+
+# Archivos compilados Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Bases de datos y archivos PID
+*.db
+*.sqlite3
+*.pid
+bot.pid
+bot.old.pid
+restart.marker
+
+# Logs
+logs/
+*.log
+
+# Entorno de desarrollo / IDEs
+.vscode/
+.idea/
+
+# Carpetas de caché y locks
+locks/
