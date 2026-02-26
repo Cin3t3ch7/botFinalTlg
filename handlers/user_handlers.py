@@ -258,13 +258,13 @@ async def handle_menu_selection(update: Update, context: ContextTypes.DEFAULT_TY
         except Exception:
             pass
         
-        # Verificar si el usuario tiene permiso de código de login
+        # Verificar si el usuario tiene permiso (otorgado por comando /code)
         code_access_result = execute_query("""
         SELECT code_access FROM users
         WHERE id = %s AND bot_token = %s
         """, (user_id, bot_token))
         
-        has_login_code_permission = code_access_result and code_access_result[0][0]
+        has_code_permission = code_access_result and code_access_result[0][0]
         
         # En el archivo user_handlers.py, función handle_menu_selection, caso 'netflix_menu'
         if is_reseller_user:
@@ -273,13 +273,13 @@ async def handle_menu_selection(update: Update, context: ContextTypes.DEFAULT_TY
                 [InlineKeyboardButton("Enlace Reset Password", callback_data='netflix_reset_link')],
                 [InlineKeyboardButton("Actualizar Hogar", callback_data='netflix_update_home')],
                 [InlineKeyboardButton("Código de Hogar", callback_data='netflix_home_code')],
-                [InlineKeyboardButton("Aprovación de inicio", callback_data='netflix_activation')],
+                [InlineKeyboardButton("Código de Login", callback_data='netflix_login_code')],
                 [InlineKeyboardButton("Volver al Menú Principal", callback_data='main_menu')]
             ]
             
-            # Añadir opción de código de login si tiene permiso
-            if has_login_code_permission or user_id == ADMIN_ID:
-                keyboard.insert(3, [InlineKeyboardButton("Código de Login", callback_data='netflix_login_code')])
+            # Añadir opción de Aprovación de inicio si tiene permiso
+            if has_code_permission or user_id == ADMIN_ID:
+                keyboard.insert(4, [InlineKeyboardButton("Aprovación de inicio", callback_data='netflix_activation')])
         else:
             # Base de menú para usuarios normales
             keyboard = [
@@ -287,13 +287,13 @@ async def handle_menu_selection(update: Update, context: ContextTypes.DEFAULT_TY
                 [InlineKeyboardButton("Actualizar Hogar", callback_data='netflix_update_home')],
                 [InlineKeyboardButton("Código de Hogar", callback_data='netflix_home_code')],
                 [InlineKeyboardButton("País de la Cuenta", callback_data='netflix_country')],
-                [InlineKeyboardButton("Aprovación de inicio", callback_data='netflix_activation')],
+                [InlineKeyboardButton("Código de Login", callback_data='netflix_login_code')],
                 [InlineKeyboardButton("Volver al Menú Principal", callback_data='main_menu')]
             ]
             
-            # Añadir opción de código de login si tiene permiso
-            if has_login_code_permission or user_id == ADMIN_ID:
-                keyboard.insert(4, [InlineKeyboardButton("Código de Login", callback_data='netflix_login_code')])
+            # Añadir opción de Aprovación de inicio si tiene permiso
+            if has_code_permission or user_id == ADMIN_ID:
+                keyboard.insert(5, [InlineKeyboardButton("Aprovación de inicio", callback_data='netflix_activation')])
             
         reply_markup = InlineKeyboardMarkup(keyboard)
         await query.edit_message_text("Selecciona una opción de Netflix:", reply_markup=reply_markup)
